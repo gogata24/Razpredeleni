@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Website.ViewModel.CarViewModel>
+@using Website.HelpTool;
+@{
+    ViewData["Title"] = "List of Cars";
+}
+
+<h2>List of Cars</h2>
+<form asp-controller="Car" asp-action="Index" method="get"> 
+    <div>
+        <input type ="text" name="searchBrand" class="form-control" placeholder="Search by brand" />
+    </div>
+    <input type="submit" value="Filter" class="btn btn-primary" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Brand
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Description
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => car.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => car.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => car.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => car.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => car.Description)
+                </td>
+               
+                <td>
+                @if (Logged.Username == "admin")
+                {
+                    
+                      <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-sm btn-warning">Edit</a>
+                      <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-sm btn-danger">Delete</a>
+                   
+                }
+                else
+                {
+                    if(Logged.Id == car.UserId)
+                    {
+                        
+                            <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-sm btn-danger">Delete</a>
+                      
+                    }
+                }
+
+                    <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-success">Details</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
